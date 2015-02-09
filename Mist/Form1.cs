@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Mist.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MaterialSkin
+namespace Mist
 {
-    class Form1 : MaterialSkin
+    class Form1 : MaterialForm
     {
 
 
