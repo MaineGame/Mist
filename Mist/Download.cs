@@ -90,7 +90,7 @@ namespace Mist
 
                 };
 
-
+                Directory.CreateDirectory(Globals.root + "\\games");
 
                 //wait for the file to download... async... because we needed event handlers to still be triggered.
                 client.DownloadFileTaskAsync(

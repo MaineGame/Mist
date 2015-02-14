@@ -23,11 +23,11 @@ namespace Mist
             contract.name = "hgsg";
             contract.versionString = "01000000";
             contract.executableName = "asdfghjk.exe";
-
+            Globals.root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            
             new Download(new Game(contract)).ShowDialog();
 
             InitializeComponent();
-            Globals.root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
