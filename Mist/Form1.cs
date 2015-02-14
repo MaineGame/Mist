@@ -17,8 +17,17 @@ namespace Mist
     {
         public Mist()
         {
-            InitializeComponent();
 
+            GameContract contract = new GameContract();
+            contract.id = "1";
+            contract.name = "hgsg";
+            contract.versionString = "01000000";
+            contract.executableName = "asdfghjk.exe";
+
+            new Download(new Game(contract)).ShowDialog();
+
+            InitializeComponent();
+            Globals.root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
@@ -170,7 +179,7 @@ namespace UniSteam
                 Console.WriteLine(ex.ToString());
                 Close();
             }
-             * */
+             * 
         }
 
         //File Transfer Successful
@@ -196,7 +205,7 @@ namespace UniSteam
          * Database Username:	mainegamesteam
          * password:            mainegamesteam1!
          * 
-         */
+         
 
 
 

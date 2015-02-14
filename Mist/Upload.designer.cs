@@ -1,4 +1,4 @@
-﻿namespace UniSteam
+﻿namespace Mist
 {
     partial class Upload
     {

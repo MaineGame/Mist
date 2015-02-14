@@ -11,10 +11,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Compression;
+using MaterialSkin.Controls;
+using MaterialSkin;
 
-namespace UniSteam
+namespace Mist
 {
-    public partial class Download : Form
+    public partial class Download : MaterialForm
     {
         //the game to be downloaded. we can construct the url and everything 
         //because all information about a game can be found in its json,
@@ -37,23 +39,18 @@ namespace UniSteam
         {
             this.game = game;
             InitializeComponent();
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
         }
 
         private void Download_Load(object sender, EventArgs e)
         {
-            label1.Text = "Click Start to begin downloading " + game.name + ".";
-            label1.AutoSize = true;
-            label2.Text = "";
-            label4.Text = "";
+            materialLabel1.Text = "Click Start to begin downloading " + game.name + ".";
+            materialLabel1.AutoSize = true;
+            materialLabel2.Text = "";
+            materialLabel3.Text = "";
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //just run the work thread, it'll know what you want to do
-            //by reading the text on the only button on the form.
-            backgroundWorker1.RunWorkerAsync();
-        }
-
 
         //this is assumed to be synchronous, when this returns we cant report progress.
         //noting that because at first, i tried to await and had to make this async, but it 
@@ -61,7 +58,7 @@ namespace UniSteam
         //to report progress as it thought it was done.
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (button2.Text == "Close")
+            if (materialRaisedButton1.Text == "Close")
             {
                 // this will only be set like this if we already reported success from the 
                 // else bit of this conditional.
@@ -98,13 +95,13 @@ namespace UniSteam
                 //wait for the file to download... async... because we needed event handlers to still be triggered.
                 client.DownloadFileTaskAsync(
                     new Uri("http://" + Globals.DOMAIN + "/" + game.id + "/current.zip"),
-                    Form1.root + "\\games\\temp.zip").Wait();
+                    Globals.root + "\\games\\temp.zip").Wait();
 
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
                 //then you know, actually start that bit...
-                ZipFile.ExtractToDirectory(Form1.root + "\\games\\temp.zip", Form1.root + "\\games\\" + game.id);
+                ZipFile.ExtractToDirectory(Globals.root + "\\games\\temp.zip", Globals.root + "\\games\\" + game.id);
 
                 //houston, we're done here.
                 backgroundWorker1.ReportProgress(STATE_SUCCESS);
@@ -127,49 +124,49 @@ namespace UniSteam
             percent = (int)percent;
             percent /= 100;
 
-            label2.Text = "" + percent + "%";
+            materialLabel2.Text = "" + percent + "%";
 
 
-            label4.Text = "" + ((double)(e.ProgressPercentage / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
+            materialLabel3.Text = "" + ((double)(e.ProgressPercentage / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
 
             #endregion
 
             if (e.ProgressPercentage == STATE_EXTRACTING)
             {
                 #region extracting update stuff
-                label2.Text = "100%";
+                materialLabel2.Text = "100%";
 
-                label4.Text = "" + ((double)(totalBytes / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
+                materialLabel3.Text = "" + ((double)(totalBytes / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
 
                 progressBar1.Style = ProgressBarStyle.Marquee;
                 progressBar1.MarqueeAnimationSpeed = 20;
 
-                label1.Text = "Extracting " + game.name + "...";
+                materialLabel1.Text = "Extracting " + game.name + "...";
                 #endregion
             }
             else if (e.ProgressPercentage == STATE_SUCCESS)
             {
                 #region success stuff
                 //when the zip completes
-                label1.Text = "" + game.name + " successfully installed!";
-                button2.Enabled = true;
-                label2.Text = "100%";
+                materialLabel1.Text = "" + game.name + " successfully installed!";
+                materialRaisedButton1.Enabled = true;
+                materialLabel2.Text = "100%";
                 progressBar1.Minimum = 0;
                 progressBar1.Maximum = 1;
                 progressBar1.Value = 1;
                 progressBar1.Style = ProgressBarStyle.Continuous;
-                button2.Text = "Close";
-                label4.Text = "" + ((double)(totalBytes / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
+                materialRaisedButton1.Text = "Close";
+                materialLabel3.Text = "" + ((double)(totalBytes / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
                 #endregion
             }
             else if (e.ProgressPercentage == STATE_CONNECTING)
             {
                 #region connecting to server...
                 //when the zip completes
-                label1.Text = "Connecting to server...";
-                button2.Enabled = false;
-                label4.Text = "" + ((double)(0 / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
-                label2.Text = "0%";
+                materialLabel1.Text = "Connecting to server...";
+                materialRaisedButton1.Enabled = false;
+                materialLabel3.Text = "" + ((double)(0 / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
+                materialLabel2.Text = "0%";
                 #endregion
             }
             else if (e.ProgressPercentage == CLOSE_WINDOW)
@@ -182,9 +179,9 @@ namespace UniSteam
             {
                 #region during actual progress
                 //when the download is donwloading
-                button2.Enabled = false;
+                materialRaisedButton1.Enabled = false;
                 progressBar1.Style = ProgressBarStyle.Continuous;
-                label1.Text = "Downloading " + game.name + "...";
+                materialLabel1.Text = "Downloading " + game.name + "...";
                 #endregion
             }
         }
@@ -192,6 +189,13 @@ namespace UniSteam
         private void progressBar1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void materialRaisedButton1_Click(object sender, EventArgs e)
+        {
+            //just run the work thread, it'll know what you want to do
+            //by reading the text on the only button on the form.
+            backgroundWorker1.RunWorkerAsync();
         }
 
     }
