@@ -100,6 +100,9 @@ namespace Mist
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
+                //delete the old if you have one
+                Directory.Delete(Globals.root + "\\games\\" + game.id, true);
+
                 //then you know, actually start that bit...
                 ZipFile.ExtractToDirectory(Globals.root + "\\games\\temp.zip", Globals.root + "\\games\\" + game.id);
 
@@ -137,6 +140,7 @@ namespace Mist
                 materialLabel2.Text = "100%";
 
                 materialLabel3.Text = "" + ((double)(totalBytes / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
+                materialLabel3.AutoSize = true;
 
                 progressBar1.Style = ProgressBarStyle.Marquee;
                 progressBar1.MarqueeAnimationSpeed = 20;

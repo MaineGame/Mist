@@ -42,7 +42,7 @@
             this.progressBar1.Location = new System.Drawing.Point(16, 105);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(10);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(379, 23);
+            this.progressBar1.Size = new System.Drawing.Size(412, 23);
             this.progressBar1.TabIndex = 1;
             this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
@@ -90,17 +90,17 @@
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel3.Location = new System.Drawing.Point(181, 138);
+            this.materialLabel3.Location = new System.Drawing.Point(118, 137);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(100, 23);
+            this.materialLabel3.Size = new System.Drawing.Size(196, 23);
             this.materialLabel3.TabIndex = 9;
             this.materialLabel3.Text = "materialLabel3";
             // 
             // materialRaisedButton1
             // 
             this.materialRaisedButton1.Depth = 0;
-            this.materialRaisedButton1.Location = new System.Drawing.Point(287, 137);
+            this.materialRaisedButton1.Location = new System.Drawing.Point(320, 137);
             this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton1.Name = "materialRaisedButton1";
             this.materialRaisedButton1.Primary = true;
@@ -114,7 +114,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(447, 199);
+            this.ClientSize = new System.Drawing.Size(447, 173);
             this.Controls.Add(this.materialRaisedButton1);
             this.Controls.Add(this.materialLabel3);
             this.Controls.Add(this.materialLabel2);
