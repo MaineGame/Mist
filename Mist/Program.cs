@@ -17,6 +17,7 @@ namespace Mist
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Connect());
             Application.Run(new Mist());
         }
     }

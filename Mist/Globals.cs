@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -16,6 +17,10 @@ namespace Mist
     {
         public static string DOMAIN = "themainegame.com/games/games";
         public static string root = "";
+
+        public static MySqlConnection connection = null;
+        public static Process process = null;
+
     }
 
     public class GameContract

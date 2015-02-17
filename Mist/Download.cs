@@ -100,12 +100,13 @@ namespace Mist
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
-                //delete the old if you have one
-                Directory.Delete(Globals.root + "\\games\\" + game.id, true);
-
+                if (Directory.Exists(Globals.root + "\\games\\" + game.id))
+                    //delete the old if you have one
+                    Directory.Delete(Globals.root + "\\games\\" + game.id, true);
+                
                 //then you know, actually start that bit...
                 ZipFile.ExtractToDirectory(Globals.root + "\\games\\temp.zip", Globals.root + "\\games\\" + game.id);
-
+                
                 //houston, we're done here.
                 backgroundWorker1.ReportProgress(STATE_SUCCESS);
                 #endregion

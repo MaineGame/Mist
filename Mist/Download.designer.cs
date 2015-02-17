@@ -88,7 +88,7 @@
             // materialLabel3
             // 
             this.materialLabel3.Depth = 0;
-            this.materialLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.materialLabel3.Location = new System.Drawing.Point(118, 137);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
@@ -122,6 +122,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.progressBar1);
             this.Name = "Download";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Download";
             this.Load += new System.EventHandler(this.Download_Load);
             this.ResumeLayout(false);
