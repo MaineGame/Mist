@@ -17,7 +17,7 @@ namespace Mist
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Connect());
+            Globals.maintainDatabaseConnection();
             Application.Run(new Mist());
         }
     }

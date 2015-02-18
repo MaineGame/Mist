@@ -191,7 +191,7 @@ namespace Mist
         //this happens directly after click, before any animation...
         private void materialTabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            switchTabs(Tab.STORE);
+            switchTabs(Globals.convert(e.TabPage.Text));
         }
 
         //pretty simple method, thought there would be more to this. there wasn't
@@ -201,23 +201,11 @@ namespace Mist
             games = getGamesFromStore();
         }
 
-        //quick thing to call before accessing database commands just to be sure.
-        //also, should always call this from UI thread as it opens up a dialog.
-        private void maintainDatabaseConnection()
-        {
-            //if for some reason that connection goes bad, reconnect it.
-            while (Globals.connection == null
-                || Globals.connection.State != ConnectionState.Open
-                || Globals.connection.IsPasswordExpired)
-
-                new Connect().ShowDialog();
-        }
-        
         private Game[] getGamesFromStore()
         {
-
-            //before we do anything, make sure that we totally have an active connection...
-            maintainDatabaseConnection();
+            //TODO if this ever ACTUALLY tries to open up a dialog, it will fail because
+            //materialskin and cross threadin even nastier than winforms cross threading.
+            Globals.maintainDatabaseConnection();
 
             List<Game> games = new List<Game>();
 
@@ -246,11 +234,19 @@ namespace Mist
         {
             //primary objective of this method is to load the right games into the games array.
 
+            //leaving this here to alert future me that thisis a BAD IDEA.
+            //i know it seems like a good idea, but picture this:
+            //you open up the store and just moments after a new game title is added.
+            //in order ti get that title, you immediately refresh the page. but that
+            //doesn't work as you are never actually contacting the server.
+            //this should only ever happen if the array is not set to change.
+            //and the only time that would make any sense is when you install a game and simply
+            //need to reload the screen to enble the play button.
             if (selecting == selected)
             {
                 //dont need to load anything new into our games array.
                 //this is just a refreshing call.
-                return;
+                //return;
             }
             
             //if we want the store, i.e. parameter passed

@@ -94,7 +94,7 @@ namespace Mist
 
                 //wait for the file to download... async... because we needed event handlers to still be triggered.
                 client.DownloadFileTaskAsync(
-                    new Uri("http://" + Globals.DOMAIN + "/" + game.id + "/current.zip"),
+                    new Uri(Globals.DOMAIN + "/" + game.id + "/current.zip"),
                     Globals.root + "\\games\\temp.zip").Wait();
 
                 //okay, we good downloading, tell the ui we're extracting now
