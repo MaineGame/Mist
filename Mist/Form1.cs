@@ -110,7 +110,7 @@ namespace Mist
                 {
                     openGame(game);
                 };
-                playButton.Size = new Size(94, 10);
+                playButton.Size = new Size(94, 20);
                 //playButton.Dock = DockStyle.Right;
                 buttonPanel.Controls.Add(playButton);
                 if (!downloaded) playButton.Enabled = false;
@@ -125,7 +125,7 @@ namespace Mist
                         downloadGame(game);
                     };
 
-                    installButton.Size = new Size(94, 10);
+                    installButton.Size = new Size(94, 20);
                     //installButton.Dock = DockStyle.Right;
                     buttonPanel.Controls.Add(installButton);
                 }
@@ -139,7 +139,7 @@ namespace Mist
                         downloadGame(game);
                     };
 
-                    installButton.Size = new Size(94, 10);
+                    installButton.Size = new Size(94, 20);
                     //installButton.Dock = DockStyle.Right;
                     buttonPanel.Controls.Add(installButton);
                 }
