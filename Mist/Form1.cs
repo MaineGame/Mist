@@ -191,28 +191,30 @@ namespace Mist
             switchTabs(Tab.STORE);
         }
 
-        private void materialTabControl1_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-
-        }
-
-        private void materialTabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        //pretty simple method, thought there would be more to this. there wasn't
+        //oh well, just in case there is later...
         private void loadStore()
         {
             games = getGamesFromStore();
         }
 
+        //quick thing to call before accessing database commands just to be sure.
+        //also, should always call this from UI thread as it opens up a dialog.
+        private void maintainDatabaseConnection()
+        {
+            //if for some reason that connection goes bad, reconnect it.
+            while (Globals.connection == null
+                || Globals.connection.State != ConnectionState.Open
+                || Globals.connection.IsPasswordExpired)
+
+                new Connect().ShowDialog();
+        }
         
         private Game[] getGamesFromStore()
         {
 
-            //just because encapsulation, just make sure the connection is safe.
-            //should already be chacked but hey, maybe i screwed up along the line.
-
+            //before we do anything, make sure that we totally have an active connection...
+            maintainDatabaseConnection();
 
             List<Game> games = new List<Game>();
 
@@ -247,13 +249,6 @@ namespace Mist
                 //this is just a refreshing call.
                 return;
             }
-            
-            //if for some reason that connection goes bad, reconnect it.
-            while (Globals.connection == null
-                || Globals.connection.State != ConnectionState.Open
-                || Globals.connection.IsPasswordExpired)
-                
-                new Connect().ShowDialog();
             
             //if we want the store, i.e. parameter passed
             if (selecting == Tab.STORE)
