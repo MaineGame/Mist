@@ -23,6 +23,13 @@ namespace Mist
 
     }
 
+    public enum Tab
+    {
+        STORE,
+        LIBRARY,
+        NOT_SET
+    }
+
     public class GameContract
     {
         public string id { get; set; }

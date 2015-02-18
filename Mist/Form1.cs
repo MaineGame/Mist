@@ -19,12 +19,8 @@ namespace Mist
 {
     public partial class Mist : MaterialForm
     {
-
-
-        private static int STORE = 0;
-        private static int LIBRARY = 1;
-        private int selecting = -1;
-        private int selected = -1;
+        private Tab selecting = Tab.NOT_SET;
+        private Tab selected = Tab.NOT_SET;
 
         private Game[] games = null;
 
@@ -45,7 +41,7 @@ namespace Mist
 
         private void Mist_Load(object sender, EventArgs e)
         {
-            switchTabs(STORE);
+            switchTabs(Tab.STORE);
         }
 
 
@@ -180,7 +176,7 @@ namespace Mist
             process.Start();
         }
 
-        private void switchTabs(int tab)
+        private void switchTabs(Tab tab)
         {
             if (!backgroundWorker1.IsBusy)
             {
@@ -192,7 +188,7 @@ namespace Mist
         //this happens directly after click, before any animation...
         private void materialTabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            switchTabs(STORE);
+            switchTabs(Tab.STORE);
         }
 
         private void materialTabControl1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -238,16 +234,30 @@ namespace Mist
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            //primary objective of this method is to load the right games into the games array.
+
             if (selecting == selected)
             {
+                //dont need to load anything new into our games array.
+                //this is just a refreshing call.
                 return;
             }
-            while (Globals.connection == null) new Connect().ShowDialog();
-            if (selecting == STORE)
+            
+            //if for some reason that connection goes bad, reconnect it.
+            while (Globals.connection == null
+                || Globals.connection.State != ConnectionState.Open
+                || Globals.connection.IsPasswordExpired)
+                
+                new Connect().ShowDialog();
+            
+            //if we want the store, i.e. parameter passed
+            if (selecting == Tab.STORE)
             {
                 loadStore();
             }
         }
+
+        
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
