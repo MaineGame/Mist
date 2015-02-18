@@ -28,8 +28,6 @@ namespace Mist
 
         private Game[] games = null;
 
-        private MethodInfo toDo = null;
-
         private MaterialSkinManager manager = MaterialSkinManager.Instance;
 
         public Mist()
@@ -240,12 +238,6 @@ namespace Mist
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (toDo != null)
-            {
-                toDo.Invoke(this, null);
-                toDo = null;
-                return;
-            }
             if (selecting == selected)
             {
                 return;
