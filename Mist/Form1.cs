@@ -203,12 +203,17 @@ namespace Mist
 
         private void loadStore()
         {
-            games = getGames();
+            games = getGamesFromStore();
         }
 
-        //this needs connection to already be legit.
-        private Game[] getGames()
+        
+        private Game[] getGamesFromStore()
         {
+
+            //just because encapsulation, just make sure the connection is safe.
+            //should already be chacked but hey, maybe i screwed up along the line.
+
+
             List<Game> games = new List<Game>();
 
             MySqlCommand command = new MySqlCommand();
