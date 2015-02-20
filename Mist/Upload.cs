@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,10 +12,11 @@ using System.Windows.Forms;
 
 namespace Mist
 {
-    public partial class Upload : Form
+    public partial class Upload : MaterialForm
     {
         public Upload()
         {
+            MaterialSkinManager.Instance.AddFormToManage(this);
             InitializeComponent();
         }
         
@@ -22,29 +25,9 @@ namespace Mist
             
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.ShowDialog();
-
-            if (openFileDialog1.CheckFileExists)
-            {
-                textBox1.Text = openFileDialog1.FileName;
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            openFileDialog2.ShowDialog();
-
-            if (openFileDialog2.CheckFileExists)
-            {
-                textBox2.Text = openFileDialog2.FileName;
-            }
-        }
-
         private void Upload_Load(object sender, EventArgs e)
         {
-            label6.Text = "";
+
         }
     }
 }

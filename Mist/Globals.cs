@@ -46,6 +46,14 @@ namespace Mist
             }
         }
 
+
+        public static string[] args;
+
+        public static bool hasArg(string arg)
+        {
+            return args.Contains(arg);
+        }
+
     }
 
     public enum Tab

@@ -41,6 +41,11 @@ namespace Mist
 
         private void Mist_Load(object sender, EventArgs e)
         {
+
+            WindowState = FormWindowState.Normal;
+            if (Globals.hasArg("-K"))
+                WindowState = FormWindowState.Maximized;
+
             switchTabs(Tab.STORE);
         }
 
@@ -139,7 +144,7 @@ namespace Mist
                     installButton.Text = "Uninstall";
                     installButton.Click += delegate(object sender, EventArgs e)
                     {
-                        downloadGame(game);
+                        uninstall(game);
                     };
 
                     installButton.Size = buttonSize;
@@ -163,6 +168,12 @@ namespace Mist
 
             manager.Theme = MaterialSkinManager.Themes.DARK;
 
+        }
+
+        private void uninstall(Game game)
+        {
+            new Uninstall(game).ShowDialog();
+            switchTabs(selected);
         }
 
         private void downloadGame(Game game)
@@ -267,6 +278,12 @@ namespace Mist
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
+        }
+
+        private void materialFlatButton1_Click(object sender, EventArgs e)
+        {
+            new Upload().ShowDialog();
+            switchTabs(selected);
         }
     }
 }
