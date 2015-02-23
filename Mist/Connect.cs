@@ -20,7 +20,6 @@ namespace Mist
             InitializeComponent();
             MaterialSkinManager manager = MaterialSkinManager.Instance;
             manager.AddFormToManage(this);
-            manager.Theme = MaterialSkinManager.Themes.DARK;
         }
 
         private void Connect_Load(object sender, EventArgs e)

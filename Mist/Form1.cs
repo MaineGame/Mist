@@ -35,7 +35,6 @@ namespace Mist
 
             InitializeComponent();
             manager.AddFormToManage(this);
-            manager.Theme = MaterialSkinManager.Themes.DARK;
 
         }
 
@@ -165,8 +164,6 @@ namespace Mist
 
             materialTabControl1.TabPages[materialTabControl1.TabIndex].Controls.Clear();
             materialTabControl1.TabPages[materialTabControl1.TabIndex].Controls.Add(mainPanel);
-
-            manager.Theme = MaterialSkinManager.Themes.DARK;
 
         }
 
