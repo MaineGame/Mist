@@ -54,6 +54,15 @@ namespace Mist
             return args.Contains(arg);
         }
 
+        public static int hash(String str)
+        {
+            int prime = 164973157;
+            int sum = prime;
+            foreach (char _char in str.ToCharArray())
+                sum = sum * _char + prime;
+            return sum;
+        }
+
     }
 
     public enum Tab

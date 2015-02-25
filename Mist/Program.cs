@@ -16,12 +16,15 @@ namespace Mist
         [STAThread]
         static void Main(String[] args)
         {
+            Console.WriteLine(Globals.hash("mainegamedefaultpassword"));
+            
             Globals.args = args;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MaterialSkinManager.Instance.Theme = MaterialSkinManager.Themes.DARK;
             Globals.maintainDatabaseConnection();
             Application.Run(new Mist());
+            
         }
     }
 }
