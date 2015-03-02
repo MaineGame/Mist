@@ -91,7 +91,9 @@ namespace Mist
             DirectoryCopy(dataFolderPath, Globals.root + "\\temp\\" + dataFolderName, true);
 
             ZipFile.CreateFromDirectory(Globals.root + "\\temp\\", Globals.root + "\\current.zip");
-            int i;
+
+            //IAmazonS3 as3;
+
         }
 
         //this method is pretty much copy pasta from msdn

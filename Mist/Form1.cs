@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -70,6 +71,12 @@ namespace Mist
                 //panel.BackColor = Color.Transparent;
 
                 FlowLayoutPanel textPanel = new FlowLayoutPanel();
+
+                    HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(Globals.DOMAIN + "/" + game.id + "/default.jpg");
+HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
+Stream stream = httpWebReponse.GetResponseStream();
+
+textPanel.BackgroundImage = Image.FromStream(stream);
                 var textPanelMargin = textPanel.Margin;
                 textPanelMargin.All = 0;
                 textPanel.Margin = textPanelMargin;
@@ -82,20 +89,20 @@ namespace Mist
                 textPanelTopSpacer.Text = "";
                 textPanelTopSpacer.Size = new Size(50, 5);
 
-                textPanel.Controls.Add(textPanelTopSpacer);
+                //textPanel.Controls.Add(textPanelTopSpacer);
 
                 MaterialLabel nameLabel = new MaterialLabel();
                 
                 nameLabel.Font = new Font(nameLabel.Font.FontFamily, 20, FontStyle.Regular);
                 nameLabel.AutoSize = true;
                 nameLabel.Text = game.displayName;
-                textPanel.Controls.Add(nameLabel);
+                //textPanel.Controls.Add(nameLabel);
 
                 MaterialLabel versionLabel = new MaterialLabel();
 
                 versionLabel.Text = "  v" + game.version;
 
-                textPanel.Controls.Add(versionLabel);
+                //textPanel.Controls.Add(versionLabel);
 
                 FlowLayoutPanel buttonPanel = new FlowLayoutPanel();
                 buttonPanel.FlowDirection = FlowDirection.BottomUp;
