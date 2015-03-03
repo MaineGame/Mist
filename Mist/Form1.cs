@@ -78,6 +78,8 @@ namespace Mist
                 textPanel.Size = new Size(300, 100);
                 textPanel.FlowDirection = FlowDirection.TopDown;
 
+                //ay yo jared
+
                 MaterialLabel nameLabel = new MaterialLabel();
                 
                 nameLabel.Font = new Font(nameLabel.Font.FontFamily, 20, FontStyle.Regular);
