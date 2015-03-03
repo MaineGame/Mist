@@ -55,7 +55,7 @@ namespace Mist
         {
             FlowLayoutPanel mainPanel = new FlowLayoutPanel();
             mainPanel.FlowDirection = FlowDirection.LeftToRight;
-            mainPanel.BorderStyle = BorderStyle.FixedSingle;
+            //mainPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Size = materialTabControl1.TabPages[materialTabControl1.TabIndex].Size;
             mainPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
             foreach (Game game in games)
@@ -67,7 +67,7 @@ namespace Mist
                 FlowLayoutPanel panel = new FlowLayoutPanel();
                 panel.FlowDirection = FlowDirection.LeftToRight;
                 panel.Size = new Size(400, 100);
-                //panel.BorderStyle = BorderStyle.FixedSingle;
+                panel.BorderStyle = BorderStyle.FixedSingle;
                 //panel.BackColor = Color.Transparent;
 
                 FlowLayoutPanel textPanel = new FlowLayoutPanel();
@@ -76,21 +76,16 @@ namespace Mist
                 textPanelMargin.All = 0;
                 textPanel.Margin = textPanelMargin;
                 textPanel.Size = new Size(300, 100);
-                //textPanel.BorderStyle = BorderStyle.FixedSingle;
                 textPanel.FlowDirection = FlowDirection.TopDown;
-                //textPanel.BackgroundImage = Image.FromFile("blerp.png");
-
-                MaterialLabel textPanelTopSpacer = new MaterialLabel();
-                textPanelTopSpacer.Text = "";
-                textPanelTopSpacer.Size = new Size(50, 5);
-
-                //textPanel.Controls.Add(textPanelTopSpacer);
 
                 MaterialLabel nameLabel = new MaterialLabel();
                 
                 nameLabel.Font = new Font(nameLabel.Font.FontFamily, 20, FontStyle.Regular);
                 nameLabel.AutoSize = true;
                 nameLabel.Text = game.displayName;
+                var nameMargin = nameLabel.Margin;
+                nameMargin.Top = 10;
+                nameLabel.Margin = nameMargin;
 
                 MaterialLabel versionLabel = new MaterialLabel();
 
@@ -131,7 +126,7 @@ namespace Mist
                     openGame(game);
                 };
 
-                Size buttonSize = new Size(92, 20);
+                Size buttonSize = new Size(200, 20);
 
                 playButton.Size = buttonSize;
                 //playButton.Dock = DockStyle.Right;
