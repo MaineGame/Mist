@@ -34,13 +34,15 @@ namespace Mist
             {
                 Console.WriteLine("Connecting...");
                 Globals.connection = new MySqlConnection(
-                    "Server=mainegamesteam.cd7espbfum11.us-west-2.rds.amazonaws.com;" +
+                    "Server=" + Globals.RDSDOMAIN + ";" +
                     "Database=mainegamesteam;" +
                     "Uid=mainegamesteam;" +
                     "Pwd=mainegamesteam1!;"
                     );
                 Globals.connection.Open();
-                Console.WriteLine("wuddup!");
+
+                //progressBar1.MarqueeAnimationSpeed = 1;
+
             }
             catch (Exception ex)
             {

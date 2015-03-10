@@ -16,7 +16,11 @@ namespace Mist
 
     public class Globals
     {
-        public static string DOMAIN = "https://s3-us-west-2.amazonaws.com/mainegamesteam";
+        public const string RDSDOMAIN = "mainegamesteam.cbzhynv0adrl.us-east-1.rds.amazonaws.com";
+        public const string FTPIP = "169.244.195.143";
+
+        //cant be const because has to be set a runtime.
+        //but please don't change it?
         public static string root = "";
 
         public static MySqlConnection connection = null;
@@ -63,6 +67,24 @@ namespace Mist
             return sum;
         }
 
+        /**
+         * path starts with /
+         */
+        public static Stream getFile(string path)
+        {
+            // Get the object used to communicate with the server.
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://" + FTPIP + path);
+            request.Method = WebRequestMethods.Ftp.DownloadFile;
+
+            // This example assumes the FTP site uses anonymous logon.
+            request.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
+
+            FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+            Stream responseStream = response.GetResponseStream();
+            return responseStream;
+        }
+
     }
 
     public enum Tab
@@ -73,6 +95,7 @@ namespace Mist
 
     }
 
+    //because everything pumps out of here a as a string.
     public class GameContract
     {
         public string id { get; set; }
@@ -82,32 +105,47 @@ namespace Mist
         public string executableName { get; set; }
 
         public string versionString { get; set; }
+
+        public string zipLength { get; set; }
     }
 
     public class Game
     {
-
         public string id;
-        public string versionString;
+        public int versionInteger;
         public string version;
         public string name;
         public string executableName;
         public string displayName;
+        public int zipLength;
 
-        public Game(GameContract contract)
+        //then later on in here we do the converting.
+        private Game(GameContract contract)
         {
             id = contract.id;
-            versionString = contract.versionString;
+            versionInteger = Int32.Parse(contract.versionString);
             name = contract.name;
             executableName = contract.executableName;
-
+            zipLength = Int32.Parse(contract.zipLength);
 
             displayName = name.Replace("&", "&&");
-            string major = "" + Int32.Parse(versionString.Substring(0, 2));
-            string minor = "" + Int32.Parse(versionString.Substring(2, 2));
-            string build = "" + Int32.Parse(versionString.Substring(4, 2));
-            string revision = "" + Int32.Parse(versionString.Substring(6, 2));
+            int major = versionInteger / 1000000;
+            int minor = (versionInteger - (major * 1000000)) / 10000;
+            int build = (versionInteger - (major * 1000000) - (minor * 10000)) / 100;
+            int revision = versionInteger - (major * 1000000) - (minor * 10000) - (build * 100);
             version = major + "." + minor + "." + build + "." + revision;
+        }
+
+        public static Game getGame(GameContract contract )
+        {
+            try{
+                Game game = new Game(contract);
+                return game;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
     }

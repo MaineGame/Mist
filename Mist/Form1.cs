@@ -58,6 +58,7 @@ namespace Mist
             //mainPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Size = materialTabControl1.TabPages[materialTabControl1.TabIndex].Size;
             mainPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+            
             foreach (Game game in games)
             {
                 //Console.Beep();
@@ -67,8 +68,8 @@ namespace Mist
                 FlowLayoutPanel panel = new FlowLayoutPanel();
                 panel.FlowDirection = FlowDirection.LeftToRight;
                 panel.Size = new Size(400, 100);
-                panel.BorderStyle = BorderStyle.FixedSingle;
-                //panel.BackColor = Color.Transparent;
+                //panel.BorderStyle = BorderStyle.FixedSingle;
+                panel.BackColor = Color.FromArgb(46, 56, 67);
 
                 FlowLayoutPanel textPanel = new FlowLayoutPanel();
                 
@@ -88,28 +89,23 @@ namespace Mist
                 var nameMargin = nameLabel.Margin;
                 nameMargin.Top = 10;
                 nameLabel.Margin = nameMargin;
+                nameLabel.BackColor = Color.Transparent;
 
                 MaterialLabel versionLabel = new MaterialLabel();
-
                 versionLabel.Text = "v" + game.version;
-
+                versionLabel.BackColor = Color.Transparent;
+                
                 try
                 {
-                    HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(Globals.DOMAIN + "/" + game.id + "/default.jpg");
-                    HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                    Stream stream = httpWebReponse.GetResponseStream();
-                    textPanel.BackgroundImage = Image.FromStream(stream);
+                    textPanel.BackgroundImage = Image.FromStream(Globals.getFile("/games/" + game.id + "/default.jpg"));
                 }
                 catch (Exception e)
                 {
-                    HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(Globals.DOMAIN + "/default.jpg");
-                    HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                    Stream stream = httpWebReponse.GetResponseStream();
-                    textPanel.BackgroundImage = Image.FromStream(stream);
+                    textPanel.BackgroundImage = Image.FromStream(Globals.getFile("/games/default.jpg"));
                     textPanel.Controls.Add(nameLabel);
                     textPanel.Controls.Add(versionLabel);
                 }
-
+                
                 FlowLayoutPanel buttonPanel = new FlowLayoutPanel();
                 buttonPanel.FlowDirection = FlowDirection.BottomUp;
                 //buttonPanel.BorderStyle = BorderStyle.FixedSingle;
@@ -128,7 +124,7 @@ namespace Mist
                     openGame(game);
                 };
 
-                Size buttonSize = new Size(200, 20);
+                Size buttonSize = new Size(93, 20);
 
                 playButton.Size = buttonSize;
                 //playButton.Dock = DockStyle.Right;
@@ -237,18 +233,28 @@ namespace Mist
 
             while (reader.Read())
             {
-                GameContract contract = new GameContract();
-                contract.executableName = reader["executableName"].ToString();
-                contract.versionString = reader["version"].ToString();
-                contract.name = reader["gameName"].ToString();
-                contract.id = reader["gameID"].ToString();
-                Game game = new Game(contract);
-                games.Add(game);
+
+                foreach (object o in reader)
+                {
+                    Console.WriteLine(o);
+                }
+
+                GameContract contract = new GameContract {
+                    executableName = reader["executable"].ToString(), 
+                    versionString = reader["gameVersion"].ToString(),
+                    name = reader["gameName"].ToString(),
+                    id = reader["gameID"].ToString(),
+                    zipLength = reader["zipLength"].ToString()//TODO passcode
+                };
+                Game game = Game.getGame(contract);
+                if(contract != null)
+                    games.Add(game);
             }
 
             reader.Close();
 
             return games.ToArray<Game>();
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

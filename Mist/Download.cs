@@ -72,29 +72,20 @@ namespace Mist
                 //tell the ui we're trying to connect...
                 backgroundWorker1.ReportProgress(STATE_CONNECTING);
 
-                //establish a new webclient because downloading is a thing.
-                WebClient client = new WebClient();
 
-                //give the downloader a progress listener. doesn't yell at the ui as much as you think, but nonetheless,
-                //it doesn't bother the ui thread, only raises flags for it. so the ui thread only actally recives the update
-                //as much as it refreshes itself.
-                client.DownloadProgressChanged += delegate(object Object, DownloadProgressChangedEventArgs downloadProgressChangedEventArgs)
+
+                totalBytes = game.zipLength;
+                Stream responseFile = Globals.getFile("");
+                StreamWriter writer = new StreamWriter(new FileStream("" + Globals.root + "\\games\\" + game.id + "\\current.zip", FileMode.Create));
+                StreamReader reader = new StreamReader(responseFile);
+                for (int i = 0; i < totalBytes; i++)
                 {
-
-                    //yeah inefficient as anything but like i gots to know
-                    if (totalBytes == TOTALBYTES_NOT_SET) totalBytes = downloadProgressChangedEventArgs.TotalBytesToReceive;
-                    
-                    //we send it the number of bytes we done got so far
-                    if (backgroundWorker1.IsBusy) backgroundWorker1.ReportProgress((int)(downloadProgressChangedEventArgs.BytesReceived));
-
-                };
+                    backgroundWorker1.ReportProgress((int)(i));
+                    writer.Write(reader.Read());
+                }
 
                 Directory.CreateDirectory(Globals.root + "\\games");
-
-                //wait for the file to download... async... because we needed event handlers to still be triggered.
-                client.DownloadFileTaskAsync(
-                    new Uri(Globals.DOMAIN + "/" + game.id + "/current.zip"),
-                    Globals.root + "\\games\\temp.zip").Wait();
+                
 
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
