@@ -75,8 +75,9 @@ namespace Mist
 
 
                 totalBytes = game.zipLength;
-                Stream responseFile = Globals.getFile("");
-                StreamWriter writer = new StreamWriter(new FileStream("" + Globals.root + "\\games\\" + game.id + "\\current.zip", FileMode.Create));
+                Stream responseFile = Globals.getFile("/games/" + game.id + "/current.zip");
+                Directory.CreateDirectory(Globals.root + "\\games");
+                StreamWriter writer = new StreamWriter(new FileStream("" + Globals.root + "\\games\\current.zip", FileMode.Create));
                 StreamReader reader = new StreamReader(responseFile);
                 for (int i = 0; i < totalBytes; i++)
                 {
@@ -84,7 +85,6 @@ namespace Mist
                     writer.Write(reader.Read());
                 }
 
-                Directory.CreateDirectory(Globals.root + "\\games");
                 
 
                 //okay, we good downloading, tell the ui we're extracting now

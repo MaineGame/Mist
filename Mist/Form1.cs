@@ -113,23 +113,9 @@ namespace Mist
                 var buttonPanelMargin = buttonPanel.Margin;
                 buttonPanelMargin.All = 0;
                 buttonPanel.Margin = buttonPanelMargin;
-
                 //buttonPanel.BorderStyle = BorderStyle.FixedSingle;
-
-                MaterialRaisedButton playButton = new MaterialRaisedButton();
-                playButton.BackColor = Color.Gray;
-                playButton.Text = "Play";
-                playButton.Click += delegate(object sender, EventArgs e)
-                {
-                    openGame(game);
-                };
-
                 Size buttonSize = new Size(93, 20);
 
-                playButton.Size = buttonSize;
-                //playButton.Dock = DockStyle.Right;
-                buttonPanel.Controls.Add(playButton);
-                if (!downloaded) playButton.Enabled = false;
 
                 if (!downloaded)
                 {
@@ -158,6 +144,16 @@ namespace Mist
                     installButton.Size = buttonSize;
                     //installButton.Dock = DockStyle.Right;
                     buttonPanel.Controls.Add(installButton);
+
+                    MaterialRaisedButton playButton = new MaterialRaisedButton();
+                    playButton.BackColor = Color.Gray;
+                    playButton.Text = "Play";
+                    playButton.Click += delegate(object sender, EventArgs e)
+                    {
+                        openGame(game);
+                    };
+                    playButton.Size = buttonSize;
+                    buttonPanel.Controls.Add(playButton);
                 }
 
 
@@ -233,11 +229,6 @@ namespace Mist
 
             while (reader.Read())
             {
-
-                foreach (object o in reader)
-                {
-                    Console.WriteLine(o);
-                }
 
                 GameContract contract = new GameContract {
                     executableName = reader["executable"].ToString(), 
