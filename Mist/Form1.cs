@@ -58,7 +58,6 @@ namespace Mist
             //mainPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Size = materialTabControl1.TabPages[materialTabControl1.TabIndex].Size;
             mainPanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-            
             foreach (Game game in games)
             {
                 //Console.Beep();
@@ -69,7 +68,7 @@ namespace Mist
                 panel.FlowDirection = FlowDirection.LeftToRight;
                 panel.Size = new Size(400, 100);
                 //panel.BorderStyle = BorderStyle.FixedSingle;
-                panel.BackColor = Color.FromArgb(46, 56, 67);
+                //panel.BackColor = Color.Transparent;
 
                 FlowLayoutPanel textPanel = new FlowLayoutPanel();
                 
@@ -79,8 +78,6 @@ namespace Mist
                 textPanel.Size = new Size(300, 100);
                 textPanel.FlowDirection = FlowDirection.TopDown;
 
-                //ay yo jared
-
                 MaterialLabel nameLabel = new MaterialLabel();
                 
                 nameLabel.Font = new Font(nameLabel.Font.FontFamily, 20, FontStyle.Regular);
@@ -89,12 +86,11 @@ namespace Mist
                 var nameMargin = nameLabel.Margin;
                 nameMargin.Top = 10;
                 nameLabel.Margin = nameMargin;
-                nameLabel.BackColor = Color.Transparent;
 
                 MaterialLabel versionLabel = new MaterialLabel();
+
                 versionLabel.Text = "v" + game.version;
-                versionLabel.BackColor = Color.Transparent;
-                
+
                 try
                 {
                     textPanel.BackgroundImage = Image.FromStream(Globals.getFile("/games/" + game.id + "/default.jpg"));
@@ -105,7 +101,7 @@ namespace Mist
                     textPanel.Controls.Add(nameLabel);
                     textPanel.Controls.Add(versionLabel);
                 }
-                
+
                 FlowLayoutPanel buttonPanel = new FlowLayoutPanel();
                 buttonPanel.FlowDirection = FlowDirection.BottomUp;
                 //buttonPanel.BorderStyle = BorderStyle.FixedSingle;
@@ -115,7 +111,6 @@ namespace Mist
                 buttonPanel.Margin = buttonPanelMargin;
                 //buttonPanel.BorderStyle = BorderStyle.FixedSingle;
                 Size buttonSize = new Size(93, 20);
-
 
                 if (!downloaded)
                 {
@@ -245,7 +240,6 @@ namespace Mist
             reader.Close();
 
             return games.ToArray<Game>();
-
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

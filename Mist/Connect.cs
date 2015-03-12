@@ -40,9 +40,7 @@ namespace Mist
                     "Pwd=mainegamesteam1!;"
                     );
                 Globals.connection.Open();
-
-                //progressBar1.MarqueeAnimationSpeed = 1;
-
+                Console.WriteLine("wuddup!");
             }
             catch (Exception ex)
             {

@@ -84,7 +84,6 @@ namespace Mist
             Stream responseStream = response.GetResponseStream();
             return responseStream;
         }
-
     }
 
     public enum Tab
@@ -111,6 +110,7 @@ namespace Mist
 
     public class Game
     {
+
         public string id;
         public int versionInteger;
         public string version;
@@ -119,14 +119,15 @@ namespace Mist
         public string displayName;
         public int zipLength;
 
-        //then later on in here we do the converting.
         private Game(GameContract contract)
         {
             id = contract.id;
             versionInteger = Int32.Parse(contract.versionString);
             name = contract.name;
             executableName = contract.executableName;
+
             zipLength = Int32.Parse(contract.zipLength);
+
 
             displayName = name.Replace("&", "&&");
             int major = versionInteger / 1000000;
@@ -136,9 +137,10 @@ namespace Mist
             version = major + "." + minor + "." + build + "." + revision;
         }
 
-        public static Game getGame(GameContract contract )
+        public static Game getGame(GameContract contract)
         {
-            try{
+            try
+            {
                 Game game = new Game(contract);
                 return game;
             }
