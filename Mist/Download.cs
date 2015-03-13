@@ -74,15 +74,11 @@ namespace Mist
 
                 //establish a new webclient because downloading is a thing.
                 WebClient client = new WebClient();
-
+                
                 totalBytes = game.zipLength;
                 
                 Stream responseFile = Globals.getFile("/games/" + game.id + "/current.zip");
-                /*
-                Directory.CreateDirectory(Globals.root + "\\games");
-                StreamWriter writer = new StreamWriter(new FileStream("" + Globals.root + "\\games\\current.zip", FileMode.Create));
-                StreamReader reader = new StreamReader(responseFile);
-                for (int i = 0; i < totalBytes; i++)*/
+                
                 //give the downloader a progress listener. doesn't yell at the ui as much as you think, but nonetheless,
                 //it doesn't bother the ui thread, only raises flags for it. so the ui thread only actally recives the update
                 //as much as it refreshes itself.
@@ -94,10 +90,11 @@ namespace Mist
                 };
 
                 Directory.CreateDirectory(Globals.root + "\\games");
+                Directory.CreateDirectory(Globals.root + "\\games\\" + game.id);
 
-                //wait for the file to download... async... because we needed event handlers to still be triggered.
-                new StreamWriter(Globals.root + "\\games\\temp.zip").Write(new StreamReader(responseFile).ReadToEnd());
-
+                //download it
+                client.DownloadFileAsync();
+                
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
