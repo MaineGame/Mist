@@ -67,8 +67,10 @@ namespace Mist
             }
             else
             {
+                //this place is a mess and will cause everything to break presently because we just switched to
+                //from http to ftp and i haven't transferred this code bit yet.
                 #region download and extracting the game data files
-
+                
                 //tell the ui we're trying to connect...
                 backgroundWorker1.ReportProgress(STATE_CONNECTING);
 
