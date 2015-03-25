@@ -93,6 +93,10 @@ namespace Mist
 
                 Directory.CreateDirectory(Globals.root + "\\games");
                 Directory.CreateDirectory(Globals.root + "\\games\\" + game.id);
+                
+                if (Directory.Exists(Globals.root + "\\games\\" + game.id))
+                    //delete the old if you have one
+                    Directory.Delete(Globals.root + "\\games\\" + game.id, true);
 
                 //download it
                 client.DownloadFileTaskAsync(new Uri("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + game.id + "/current.zip"), "" + Globals.root + "\\games\\temp.zip").Wait();
@@ -100,9 +104,6 @@ namespace Mist
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
-                if (Directory.Exists(Globals.root + "\\games\\" + game.id))
-                    //delete the old if you have one
-                    Directory.Delete(Globals.root + "\\games\\" + game.id, true);
                 
                 //then you know, actually start that bit...
                 ZipFile.ExtractToDirectory(Globals.root + "\\games\\temp.zip", Globals.root + "\\games\\" + game.id);
