@@ -95,7 +95,7 @@ namespace Mist
                 Directory.CreateDirectory(Globals.root + "\\games\\" + game.id);
 
                 //download it
-                client.DownloadFileAsync();
+                client.DownloadFileTaskAsync(new Uri("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + game.id + "/current.zip"), "" + Globals.root + "\\games\\temp.zip").Wait();
                 
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
