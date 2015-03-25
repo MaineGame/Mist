@@ -29,19 +29,15 @@ namespace Mist
 
         public Mist()
         {
-
             Globals.root = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
-
-            //new Download(new Game(contract)).ShowDialog();
 
             InitializeComponent();
             manager.AddFormToManage(this);
-
         }
 
         private void Mist_Load(object sender, EventArgs e)
         {
-
+            materialLabel1.Text = "";
             WindowState = FormWindowState.Normal;
             if (Globals.hasArg("-K"))
                 WindowState = FormWindowState.Maximized;
@@ -285,6 +281,11 @@ namespace Mist
         {
             new Upload().ShowDialog();
             switchTabs(selected);
+        }
+
+        private void materialLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

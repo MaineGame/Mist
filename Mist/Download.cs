@@ -205,5 +205,10 @@ namespace Mist
             backgroundWorker1.RunWorkerAsync();
         }
 
+        private void materialFlatButton1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
     }
 }

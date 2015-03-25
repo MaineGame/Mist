@@ -1,5 +1,6 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -73,26 +75,87 @@ namespace Mist
         private void materialRaisedButton4_Click(object sender, EventArgs e)
         {
 
-            //just do everything here first bc swag
+            //check if database exists
+            //TODO actually check later because updating is a thing.
+            bool exists = false;
+            if (!exists)
+            {
 
-            //variables for later methodization.
-            string backgroundImagePath = openFileDialog1.FileName;
-            string executablePath = openFileDialog2.FileName;
-            string executableName = executablePath.Substring(executablePath.LastIndexOf("\\") + 1);
-            string dataFolderPath = folderBrowserDialog1.SelectedPath;
-            string dataFolderName = dataFolderPath.Substring(dataFolderPath.LastIndexOf("\\") + 1);
-            string passcode = materialSingleLineTextField5.Text;
+                //variables for later methodization.
+                string backgroundImagePath = openFileDialog1.FileName;
+                string executablePath = openFileDialog2.FileName;
+                string executableName = executablePath.Substring(executablePath.LastIndexOf("\\") + 1);
+                string dataFolderPath = folderBrowserDialog1.SelectedPath;
+                string dataFolderName = dataFolderPath.Substring(dataFolderPath.LastIndexOf("\\") + 1);
+                string passcode = materialSingleLineTextField5.Text;
 
-            //first copy everything in to a temp directory in root.
-            Directory.Delete(Globals.root + "\\temp", true);
-            Directory.CreateDirectory(Globals.root + "\\temp");
-            File.Copy(backgroundImagePath, Globals.root + "\\temp\\default.jpg");
-            File.Copy(executablePath, Globals.root + "\\temp\\" + executableName);
-            DirectoryCopy(dataFolderPath, Globals.root + "\\temp\\" + dataFolderName, true);
+                //first copy everything in to a temp directory in root.
+                /*
+                Directory.Delete(Globals.root + "\\temp", true);
+                Directory.CreateDirectory(Globals.root + "\\temp");
+                File.Copy(backgroundImagePath, Globals.root + "\\temp\\default.jpg");
+                File.Copy(executablePath, Globals.root + "\\temp\\" + executableName);
+                DirectoryCopy(dataFolderPath, Globals.root + "\\temp\\" + dataFolderName, true);
 
-            ZipFile.CreateFromDirectory(Globals.root + "\\temp\\", Globals.root + "\\current.zip");
+                //take everything and make it into a file /datzipdoe/
+                ZipFile.CreateFromDirectory(Globals.root + "\\temp\\", Globals.root + "\\current.zip");
+                */
+                //reset everything correctly in the database.
 
-            //IAmazonS3 as3;
+                Globals.maintainDatabaseConnection();
+
+                List<Game> games = new List<Game>();
+
+                MySqlCommand command = new MySqlCommand();
+                command.CommandText = "INSERT INTO store VALUES(" +
+
+                    new Random().Next(999) +
+                    materialSingleLineTextField3.Text +
+                    "1000000" +
+                    materialSingleLineTextField2.Text +
+                    Globals.hash(materialSingleLineTextField5.Text) +
+                    new FileInfo(Globals.root + "\\current.zip").Length +
+
+                ");";
+                command.Connection = Globals.connection;
+                command.ExecuteNonQuery();
+
+
+
+
+                //upload the zip to the ftp server
+
+
+                //lastly, make sure the image is correct because its not a zip thing.
+
+                // Get the object used to communicate with the server.
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/");
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                //so like double authentication is doubly secure. logical.
+                request.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
+
+                // Copy the contents of the file to the request stream.
+                StreamReader sourceStream = new StreamReader(Globals.root + "\\current.zip");
+                byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+                sourceStream.Close();
+                request.ContentLength = fileContents.Length;
+
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(fileContents, 0, fileContents.Length);
+                requestStream.Close();
+
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+                Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
+
+                response.Close();
+
+            }
+            else
+            {
+                //so this is an update.
+            }
 
         }
 

@@ -105,6 +105,7 @@
             this.materialLabel1.Size = new System.Drawing.Size(108, 19);
             this.materialLabel1.TabIndex = 2;
             this.materialLabel1.Text = "materialLabel1";
+            this.materialLabel1.Click += new System.EventHandler(this.materialLabel1_Click);
             // 
             // materialFlatButton1
             // 

@@ -40,6 +40,7 @@ namespace Mist
 
         private void materialRaisedButton1_Click(object sender, EventArgs e)
         {
+            materialFlatButton1.Enabled = false;
             if (state == State.INSTALLED)
                 backgroundWorker1.RunWorkerAsync();
             else if (state == State.UNINSTALLED)

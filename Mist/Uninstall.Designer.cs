@@ -92,6 +92,7 @@
             this.Controls.Add(this.materialRaisedButton1);
             this.Controls.Add(this.materialLabel1);
             this.Name = "Uninstall";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Uninstall";
             this.Load += new System.EventHandler(this.Uninstall_Load);
             this.ResumeLayout(false);
