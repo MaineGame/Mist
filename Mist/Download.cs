@@ -201,6 +201,7 @@ namespace Mist
         {
             //just run the work thread, it'll know what you want to do
             //by reading the text on the only button on the form.
+            materialFlatButton1.Enabled = false;
             backgroundWorker1.RunWorkerAsync();
         }
 
