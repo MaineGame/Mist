@@ -109,12 +109,12 @@ namespace Mist
                 MySqlCommand command = new MySqlCommand();
                 command.CommandText = "INSERT INTO store VALUES(" +
 
-                    new Random().Next(999) +
-                    materialSingleLineTextField3.Text +
-                    "1000000" +
-                    materialSingleLineTextField2.Text +
-                    Globals.hash(materialSingleLineTextField5.Text) +
-                    new FileInfo(Globals.root + "\\current.zip").Length +
+                    new Random().Next(999) + "," +
+                    materialSingleLineTextField3.Text + "," +
+                    "1000000" + "," +
+                    materialSingleLineTextField2.Text + "," +
+                    Globals.hash(materialSingleLineTextField5.Text) + "," +
+                    0 +
 
                 ");";
                 command.Connection = Globals.connection;
