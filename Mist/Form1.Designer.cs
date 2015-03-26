@@ -78,7 +78,7 @@
             // 
             this.materialTabSelector1.BaseTabControl = this.materialTabControl1;
             this.materialTabSelector1.Depth = 0;
-            this.materialTabSelector1.Location = new System.Drawing.Point(58, 24);
+            this.materialTabSelector1.Location = new System.Drawing.Point(50, 24);
             this.materialTabSelector1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialTabSelector1.Name = "materialTabSelector1";
             this.materialTabSelector1.Size = new System.Drawing.Size(215, 40);
@@ -134,8 +134,7 @@
             this.Controls.Add(this.materialTabControl1);
             this.Controls.Add(this.materialLabel1);
             this.Name = "Mist";
-            this.Text = "Mist";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Text = "GCS";
             this.Load += new System.EventHandler(this.Mist_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.ResumeLayout(false);

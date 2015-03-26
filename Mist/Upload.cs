@@ -32,7 +32,6 @@ namespace Mist
         private void Upload_Load(object sender, EventArgs e)
         {
             MaterialSkinManager.Instance.AddFormToManage(this);
-
         }
 
         private void materialFlatButton1_Click(object sender, EventArgs e)
@@ -90,35 +89,60 @@ namespace Mist
                 string passcode = materialSingleLineTextField5.Text;
 
                 //first copy everything in to a temp directory in root.
-                /*
-                Directory.Delete(Globals.root + "\\temp", true);
-                Directory.CreateDirectory(Globals.root + "\\temp");
+                if (!Directory.Exists(Globals.root + "\\temp"))
+                    Directory.CreateDirectory(Globals.root + "\\temp");
+                if (File.Exists(Globals.root + "\\temp\\default.jpg"))
+                    File.Delete(Globals.root + "\\temp\\default.jpg");
                 File.Copy(backgroundImagePath, Globals.root + "\\temp\\default.jpg");
+                if (File.Exists(Globals.root + "\\temp\\" + executableName))
+                    File.Delete(Globals.root + "\\temp\\" + executableName);
                 File.Copy(executablePath, Globals.root + "\\temp\\" + executableName);
+                if (Directory.Exists(Globals.root + "\\temp\\" + dataFolderName))
+                    Directory.Delete(Globals.root + "\\temp\\" + dataFolderName, true);
                 DirectoryCopy(dataFolderPath, Globals.root + "\\temp\\" + dataFolderName, true);
 
                 //take everything and make it into a file /datzipdoe/
+                if (File.Exists(Globals.root + "\\current.zip"))
+                    File.Delete(Globals.root + "\\current.zip");
                 ZipFile.CreateFromDirectory(Globals.root + "\\temp\\", Globals.root + "\\current.zip");
-                */
+                
                 //reset everything correctly in the database.
 
                 Globals.maintainDatabaseConnection();
 
-                List<Game> games = new List<Game>();
-
                 MySqlCommand command = new MySqlCommand();
-                command.CommandText = "INSERT INTO store VALUES(" +
-
-                    new Random().Next(999) + "," +
-                    materialSingleLineTextField3.Text + "," +
-                    "1000000" + "," +
-                    materialSingleLineTextField2.Text + "," +
-                    Globals.hash(materialSingleLineTextField5.Text) + "," +
-                    0 +
-
-                ");";
                 command.Connection = Globals.connection;
-                command.ExecuteNonQuery();
+
+                int gameID = -1;
+
+                //this thing man. tries to add the sql listing 999 times before it realizes there are no more game slots left. hopefully never going to happen?
+                {
+                    bool done = false;
+                    while (!done)
+                    {
+                        for (int i = 1; i < 1000 && !done; i++)
+                        {
+                            try
+                            {
+                                command.CommandText = "INSERT INTO store VALUES(\"" +
+                                    i + "\",\"" +
+                                    materialSingleLineTextField3.Text + "\",\"" +
+                                    "1000000" + "\",\"" +
+                                    materialSingleLineTextField2.Text + "\",\"" +
+                                    Globals.hash(materialSingleLineTextField5.Text) + "\",\"" +
+                                    new FileInfo(Globals.root + "\\current.zip").Length + "\"" +
+                                ");";
+                                command.ExecuteNonQuery();
+                                done = true;
+                                gameID = i;
+                            }
+                            catch (Exception ex)
+                            {
+                                
+                            }
+                        }
+                    }
+                }
 
 
 
@@ -129,7 +153,7 @@ namespace Mist
                 //lastly, make sure the image is correct because its not a zip thing.
 
                 // Get the object used to communicate with the server.
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/");
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/" + gameID + "/curent.zip");
                 request.Method = WebRequestMethods.Ftp.UploadFile;
 
                 //so like double authentication is doubly secure. logical.
