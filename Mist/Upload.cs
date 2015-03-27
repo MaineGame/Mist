@@ -153,6 +153,7 @@ namespace Mist
                 //lastly, make sure the image is correct because its not a zip thing.
 
                 // Get the object used to communicate with the server.
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + gameID + "/current.zip");
                 request.Method = WebRequestMethods.Ftp.UploadFile;
 
                 //so like double authentication is doubly secure. logical.
