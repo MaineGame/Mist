@@ -124,13 +124,14 @@ namespace Mist
                         {
                             try
                             {
+                                long fileLength = new FileInfo(Globals.root + "\\current.zip").Length;
                                 command.CommandText = "INSERT INTO store VALUES(\"" +
                                     i + "\",\"" +
                                     materialSingleLineTextField3.Text + "\",\"" +
                                     "1000000" + "\",\"" +
                                     materialSingleLineTextField2.Text + "\",\"" +
                                     Globals.hash(materialSingleLineTextField5.Text) + "\",\"" +
-                                    new FileInfo(Globals.root + "\\current.zip").Length + "\"" +
+                                    fileLength + "\"" +
                                 ");";
                                 command.ExecuteNonQuery();
                                 done = true;
@@ -160,9 +161,7 @@ namespace Mist
                 request.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
 
                 // Copy the contents of the file to the request stream.
-                StreamReader sourceStream = new StreamReader(Globals.root + "\\current.zip");
-                byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-                sourceStream.Close();
+                byte[] fileContents = File.ReadAllBytes(Globals.root + "\\current.zip");
                 request.ContentLength = fileContents.Length;
 
                 Stream requestStream = request.GetRequestStream();
