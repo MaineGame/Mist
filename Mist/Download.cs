@@ -99,18 +99,27 @@ namespace Mist
                     Directory.Delete(Globals.root + "\\games\\" + game.id, true);
 
                 //download it
-                client.DownloadFileTaskAsync(new Uri("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + game.id + "/current.zip"), "" + Globals.root + "\\games\\temp.zip").Wait();
-                
+                try
+                {
+                    client.Credentials = new NetworkCredential(Globals.userName, Globals.password);
+                    client.DownloadFileTaskAsync(new Uri("ftp://" + Globals.FTPIP + "/games/" + game.id + "/current.zip"), "" + Globals.root + "\\games\\temp.zip").Wait();
+                }
+                catch (Exception ex)
+                {
+                    
+                }
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);
 
                 
                 //then you know, actually start that bit...
                 ZipFile.ExtractToDirectory(Globals.root + "\\games\\temp.zip", Globals.root + "\\games\\" + game.id);
-                
+                //File.Delete(Globals.root + "\\games\\temp.zip");
+
                 //houston, we're done here.
                 backgroundWorker1.ReportProgress(STATE_SUCCESS);
                 #endregion
+
             }
         }
 
@@ -130,7 +139,6 @@ namespace Mist
             percent /= 100;
 
             materialLabel2.Text = "" + percent + "%";
-
 
             materialLabel3.Text = "" + ((double)(e.ProgressPercentage / (1024 * 1024))) + " MiBs / " + ((double)(totalBytes / (1024 * 1024))) + " MiBs";
 

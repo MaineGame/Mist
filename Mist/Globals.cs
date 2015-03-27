@@ -18,6 +18,10 @@ namespace Mist
     {
         public const string RDSDOMAIN = "mainegamesteam.cbzhynv0adrl.us-east-1.rds.amazonaws.com";
         public const string FTPIP = "169.244.195.143";
+        //public const string FTPIP = "localhost";
+        public const string userName = "mainegamesteam";
+        public const string password = "mainegamesteam1!";
+
 
         //cant be const because has to be set a runtime.
         //but please don't change it?
@@ -77,12 +81,17 @@ namespace Mist
             request.Method = WebRequestMethods.Ftp.DownloadFile;
 
             // This example assumes the FTP site uses anonymous logon.
-            request.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
+            request.Credentials = new NetworkCredential(userName, password);
 
             FtpWebResponse response = (FtpWebResponse)request.GetResponse();
 
             Stream responseStream = response.GetResponseStream();
             return responseStream;
+        }
+
+        internal static void sendErrorLog(Exception e)
+        {
+            throw new NotImplementedException();
         }
     }
 

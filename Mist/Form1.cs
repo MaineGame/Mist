@@ -220,17 +220,28 @@ namespace Mist
 
             while (reader.Read())
             {
-
-                GameContract contract = new GameContract {
-                    executableName = reader["executable"].ToString(), 
-                    versionString = reader["gameVersion"].ToString(),
-                    name = reader["gameName"].ToString(),
-                    id = reader["gameID"].ToString(),
-                    zipLength = reader["zipLength"].ToString()//TODO passcode
-                };
-                Game game = Game.getGame(contract);
-                if(contract != null)
-                    games.Add(game);
+                try
+                {
+                    if (Boolean.Parse(reader["ready"].ToString()))
+                    {
+                        GameContract contract = new GameContract
+                        {
+                            executableName = reader["executable"].ToString(),
+                            versionString = reader["gameVersion"].ToString(),
+                            name = reader["gameName"].ToString(),
+                            id = reader["gameID"].ToString(),
+                            zipLength = reader["zipLength"].ToString()//TODO passcode
+                        };
+                        Game game = Game.getGame(contract);
+                        if (contract != null)
+                            games.Add(game);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //some part of this listing was malformed.
+                    Globals.sendErrorLog(e);
+                }
             }
 
             reader.Close();

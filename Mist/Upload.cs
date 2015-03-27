@@ -71,6 +71,7 @@ namespace Mist
             materialRaisedButton4.Text = materialCheckBox1.Checked ? "Update" : "Upload";
         }
 
+        //like honestly methodize this please.
         private void materialRaisedButton4_Click(object sender, EventArgs e)
         {
 
@@ -87,6 +88,8 @@ namespace Mist
                 string dataFolderPath = folderBrowserDialog1.SelectedPath;
                 string dataFolderName = dataFolderPath.Substring(dataFolderPath.LastIndexOf("\\") + 1);
                 string passcode = materialSingleLineTextField5.Text;
+
+                #region copy all file into the right places.
 
                 //first copy everything in to a temp directory in root.
                 if (!Directory.Exists(Globals.root + "\\temp"))
@@ -105,15 +108,18 @@ namespace Mist
                 if (File.Exists(Globals.root + "\\current.zip"))
                     File.Delete(Globals.root + "\\current.zip");
                 ZipFile.CreateFromDirectory(Globals.root + "\\temp\\", Globals.root + "\\current.zip");
-                
-                //reset everything correctly in the database.
+
+                #endregion
+
+                //will be set in the next region if thegame is successfully added.
+                int gameID = -1;
+
+                #region tell the rds database that hey, this game exists man!
 
                 Globals.maintainDatabaseConnection();
 
                 MySqlCommand command = new MySqlCommand();
                 command.Connection = Globals.connection;
-
-                int gameID = -1;
 
                 //this thing man. tries to add the sql listing 999 times before it realizes there are no more game slots left. hopefully never going to happen?
                 {
@@ -129,9 +135,10 @@ namespace Mist
                                     i + "\",\"" +
                                     materialSingleLineTextField3.Text + "\",\"" +
                                     "1000000" + "\",\"" +
-                                    materialSingleLineTextField2.Text + "\",\"" +
+                                    executableName + "\",\"" +
                                     Globals.hash(materialSingleLineTextField5.Text) + "\",\"" +
-                                    fileLength + "\"" +
+                                    fileLength + "\"," + 
+                                    "false" +
                                 ");";
                                 command.ExecuteNonQuery();
                                 done = true;
@@ -144,14 +151,21 @@ namespace Mist
                         }
                     }
                 }
+                
+                #endregion
 
+                #region create the ID Folder on ftp
 
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + gameID + "/");
+                ftpRequest.Method = WebRequestMethods.Ftp.MakeDirectory;
+                ftpRequest.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
+                FtpWebResponse response = (FtpWebResponse)ftpRequest.GetResponse();
 
+                #endregion
+
+                #region upload zip file to server
 
                 //upload the zip to the ftp server
-
-
-                //lastly, make sure the image is correct because its not a zip thing.
 
                 // Get the object used to communicate with the server.
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + gameID + "/current.zip");
@@ -168,12 +182,49 @@ namespace Mist
                 requestStream.Write(fileContents, 0, fileContents.Length);
                 requestStream.Close();
 
-                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                response = (FtpWebResponse)request.GetResponse();
 
                 Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
 
                 response.Close();
 
+                #endregion
+
+                //TODO
+
+                #region upload the image file
+                request = (FtpWebRequest)WebRequest.Create("ftp://mainegamesteam:mainegamesteam1!@" + Globals.FTPIP + "/games/" + gameID + "/default.jpg");
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                //so like double authentication is doubly secure. logical.
+                request.Credentials = new NetworkCredential("mainegamesteam", "mainegamesteam1!");
+
+                // Copy the contents of the file to the request stream.
+                fileContents = File.ReadAllBytes(Globals.root + "\\temp\\default.jpg");
+                request.ContentLength = fileContents.Length;
+
+                requestStream = request.GetRequestStream();
+                requestStream.Write(fileContents, 0, fileContents.Length);
+                requestStream.Close();
+
+                response = (FtpWebResponse)request.GetResponse();
+
+                Console.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
+
+                response.Close();
+                #endregion
+
+                #region tell rds the files are ready!
+
+                Globals.maintainDatabaseConnection();
+
+                command = new MySqlCommand();
+                command.Connection = Globals.connection;
+                command.CommandText = "UPDATE store SET ready = true WHERE gameID = " + gameID;
+                command.ExecuteNonQuery();
+
+                #endregion
+            
             }
             else
             {
