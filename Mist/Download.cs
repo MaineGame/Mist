@@ -79,8 +79,6 @@ namespace Mist
                 
                 totalBytes = game.zipLength;
                 
-                Stream responseFile = Globals.getFile("/games/" + game.id + "/current.zip");
-                
                 //give the downloader a progress listener. doesn't yell at the ui as much as you think, but nonetheless,
                 //it doesn't bother the ui thread, only raises flags for it. so the ui thread only actally recives the update
                 //as much as it refreshes itself.
@@ -103,10 +101,11 @@ namespace Mist
                 {
                     client.Credentials = new NetworkCredential(Globals.userName, Globals.password);
                     client.DownloadFileTaskAsync(new Uri("ftp://" + Globals.FTPIP + "/games/" + game.id + "/current.zip"), "" + Globals.root + "\\games\\temp.zip").Wait();
+                    
                 }
                 catch (Exception ex)
                 {
-                    
+                    MessageBox.Show(ex.Message);
                 }
                 //okay, we good downloading, tell the ui we're extracting now
                 backgroundWorker1.ReportProgress(STATE_EXTRACTING);

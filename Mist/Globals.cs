@@ -17,10 +17,11 @@ namespace Mist
     public class Globals
     {
         public const string RDSDOMAIN = "mainegamesteam.cbzhynv0adrl.us-east-1.rds.amazonaws.com";
-        public const string FTPIP = "169.244.195.143";
+        //public const string FTPIP = "169.244.195.143";
+        public const string FTPIP = "192.168.2.140";
         //public const string FTPIP = "localhost";
-        public const string userName = "mainegamesteam";
-        public const string password = "mainegamesteam1!";
+        public const string userName = "GCSUser";
+        public const string password = "";
 
 
         //cant be const because has to be set a runtime.
