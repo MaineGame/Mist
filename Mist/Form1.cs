@@ -45,11 +45,13 @@ namespace Mist
             switchTabs(Tab.STORE);
         }
 
+        private FlowLayoutPanel mainPanel = null;
 
         //called upon selecting the store. called from the worker completed thing.
         private void updateListings()
         {
-            FlowLayoutPanel mainPanel = new FlowLayoutPanel();
+            mainPanel = new FlowLayoutPanel();
+            mainPanel.AutoScroll = true;
             mainPanel.FlowDirection = FlowDirection.LeftToRight;
             //mainPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Size = materialTabControl1.TabPages[materialTabControl1.TabIndex].Size;
@@ -69,6 +71,7 @@ namespace Mist
                 FlowLayoutPanel textPanel = new FlowLayoutPanel();
                 
                 var textPanelMargin = textPanel.Margin;
+                textPanel.MouseEnter += focusscroll;
                 textPanelMargin.All = 0;
                 textPanel.Margin = textPanelMargin;
                 textPanel.Size = new Size(300, 100);
@@ -105,6 +108,7 @@ namespace Mist
                 var buttonPanelMargin = buttonPanel.Margin;
                 buttonPanelMargin.All = 0;
                 buttonPanel.Margin = buttonPanelMargin;
+                buttonPanel.MouseEnter += focusscroll;
                 //buttonPanel.BorderStyle = BorderStyle.FixedSingle;
                 Size buttonSize = new Size(93, 20);
 
@@ -297,6 +301,14 @@ namespace Mist
         private void materialLabel1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void focusscroll(object sender, EventArgs e)
+        {
+            if (mainPanel != null)
+            {
+                mainPanel.Focus();
+            }
         }
     }
 }
